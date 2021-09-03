@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="bulkData" format="json">
+      <types:shape format="weave" example="examples/sample_bulk-2.json"><![CDATA[%dw 2.0
+
+type bulkData = Array<{|  movieName: String,   ticketHolder: String|} | Null> {"example": "[{\\\"movieName\\\":\\\"Avengers\\\",\\\"ticketHolder\\\":\\\"Abhishek\\\"},{\\\"movieName\\\":\\\"Thor 3\\\",\\\"ticketHolder\\\":\\\"Rohit\\\"},{\\\"movieName\\\":\\\"Iron Man 4\\\",\\\"ticketHolder\\\":\\\"Tejas\\\"},null]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+</types:mule>

@@ -1,0 +1,107 @@
+#%RAML 1.0
+title: BookMyShow
+
+traits:
+  client-id-required:
+    headers:
+      client_id:
+        type: string
+      client_secret:
+        type: string
+    responses:
+      401:
+        description: Unauthorized or invalid client application credentials
+      500:
+        description: Bad response from authorization server, or WSDL SOAP Fault error
+
+/movies:
+  get:
+    is: [client-id-required]
+    description: Details of movies that can be booked
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                "movies": [
+                  {
+                    "movieId": "550e8400-e29b-41d4-a716-446655440000",
+                    "movieTitle": "Avengers"
+                  },
+                  {
+                    "movieId": "550e8400-e29b-41d4-a716-446655440111",
+                    "movieTitle": "Sher Shah"
+                  },
+                  {
+                    "movieId": "550e8400-e29b-41d4-a716-446655440222",
+                    "movieTitle": "Kabir Singh"
+                  }
+                ]
+              }
+
+  /{movieName}:
+    post:
+      responses:
+        201:
+          description: Booking a movie and returning the eticket
+          body:
+            application/json:
+              example:
+                 {
+                  "ticketNumber": "1432",
+                  "movieId": "550e8400-e29b-41d4-a716-446655440000",
+                  "movieTitle": "Get Lucky",
+                  "duration": "180:07",
+                  "price" : "Rs 600",
+                  "seatNo" : "12",
+                 }
+
+  post:
+    body:
+      application/json:
+        example:
+          [
+          {
+            "movieName" : "Avengers",
+            "ticketHolder" : "Abhishek"
+                                       },
+          {
+            "movieName" : "Thor 3",
+            "ticketHolder" : "Rohit"
+                                       },
+          {
+          "movieName" : "Iron Man 4",
+          "ticketHolder" : "Tejas"
+                                       },
+          ]
+
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+                   [
+                   {
+                      "movieName" : "Avengers",
+                      "ticketHolder" : "Abhishek",
+                      "discounted_price" : 150,
+                      "seatNo" : 20,
+                      "duration" : "02:00:00"
+                                                },
+                   {
+                      "movieName" : "Thor 3",
+                      "ticketHolder" : "Rohit",
+                      "discounted_price" : 150,
+                      "seatNo" : 20,
+                      "duration" : "02:00:00"
+                                                },
+                   {
+                     "movieName" : "Iron Man 4",
+                     "ticketHolder" : "Tejas",
+                     "discounted_price" : 150,
+                     "seatNo" : 20,
+                     "duration" : "02:00:00"
+                                                },
+                   ]
+            

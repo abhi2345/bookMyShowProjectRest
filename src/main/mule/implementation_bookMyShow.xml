@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="GetMovies" doc:id="051db017-ad63-4ac2-ac62-de0b8b529476" >
+		<db:select doc:name="Select" doc:id="f006f653-8564-492c-9fab-1a4304fc67b3" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from movies where bookable_status = 'YES'
+OR bookable_status = 'Y';]]></db:sql>
+		</db:select>
+		<logger level="INFO" doc:name="Logger" doc:id="596b9058-7c3d-4b6c-a215-ea38d056c028" message="#[payload]"/>
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="cd42b845-1654-42c3-ba73-9e5d945f6b38" type="ANY">
+				<set-payload value="Problem on the server. Please try again later" doc:name="Set Payload" doc:id="6ed55a62-c9cb-429d-ab3d-3d6368f6e94e" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="PostMovieIdEticket" doc:id="e8f47b49-74c1-4613-905b-e65e26741934" >
+		<db:insert doc:name="Insert" doc:id="1d64412d-f730-4a24-b78f-48a3906b67ab" target="storeTicket" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into eticket (movie_id,movieTitle,duration,price,discounted_price,seatNo)
+values ((SELECT movie_id from movies WHERE movie_name = :movie_name),
+(SELECT movie_name from movies WHERE movie_name = :movie_name),
+(SELECT duration from movies WHERE movie_name = :movie_name),
+(SELECT price from movies WHERE movie_name = :movie_name),
+(SELECT (price - discount) from movies WHERE movie_name = :movie_name),
+(SELECT available_seats from seatInventory where show_name = :movie_name and available_seats>0)
+);
+
+
+
+
+
+]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'movie_name' : attributes.uriParams.movieName}]]]></db:input-parameters>
+		</db:insert>
+		<set-variable value="#[attributes.uriParams.movieName]" doc:name="Set Variable" doc:id="dc252a5c-d710-49f3-8e76-47b794c94d02" variableName="saveUri"/>
+		<db:select doc:name="Select" doc:id="57edffa1-bca1-4d66-8e3e-1890d485a02f" target="eticket" config-ref="Database_Config">
+			<db:sql ><![CDATA[select  max(ticket_number) AS Your_Ticket ,movieTitle,duration,discounted_price,seatNo from eticket
+where movieTitle = :movie_name]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'movie_name' : attributes.uriParams.movieName}]]]></db:input-parameters>
+		</db:select>
+		<db:update doc:name="Update" doc:id="2bbb82dc-a491-4dfc-b370-7eeb03ac6d22" config-ref="Database_Config">
+			<db:sql ><![CDATA[update seatInventory set occupied_seats = occupied_seats+1,
+available_seats = available_seats-1
+where show_name = :movie_name and available_seats>0;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'movie_name' : vars.saveUri
+ 
+}]]]></db:input-parameters>
+		</db:update>
+		<set-payload value="#[vars.eticket]" doc:name="Set Payload" doc:id="637ed587-9dae-463d-a26b-2e3fef9467b2" />
+		<logger level="INFO" doc:name="Logger" doc:id="b233dc96-c49e-4e58-9cf4-dde59d95614e" message="Operation success"/>
+	</flow>
+	<flow name="PostDiscount" doc:id="c1d64c08-47f8-4a28-865d-5b3e075aaf91" >
+		<set-variable value="#[sizeOf(payload)]" doc:name="Set Variable" doc:id="828766b0-5c6e-4b42-a1bb-3edbc361e076" variableName="limit_value"/>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="887c43fe-e6ff-4ab6-bdd5-cee99be94a44" config-ref="Database_Config">
+			<db:bulk-input-parameters ><![CDATA[#[%dw 2.0
+output application/json
+
+---
+payload map(object,index) -> 
+{
+	movie_name :  object.movieName,
+ 	ticketHolder : object.ticketHolder
+}]]]></db:bulk-input-parameters>
+			<db:sql ><![CDATA[insert into eticketBulk (movie_id,movieTitle,duration,discounted_price,ticket_holder)
+values((SELECT movie_id from movies WHERE movie_name = :movie_name),
+(SELECT movie_name from movies WHERE movie_name = :movie_name),
+(SELECT duration from movies WHERE movie_name = :movie_name),
+(SELECT (price - (price*0.05)) from movies WHERE movie_name = :movie_name),
+:ticketHolder
+)]]></db:sql>
+		</db:bulk-insert>
+		<db:select doc:name="Select" doc:id="488434b2-3ed8-4ec9-bf10-ad683aea2b70" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * from eticketBulk ORDER BY ticket_number Desc LIMIT :number]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+number: vars.limit_value
+}]]]></db:input-parameters>
+		</db:select>
+		<logger level="INFO" doc:name="Logger" doc:id="f91c4207-911e-48a4-a98f-f520131bfb60" message="#[payload]"/>
+	</flow>
+</mule>
