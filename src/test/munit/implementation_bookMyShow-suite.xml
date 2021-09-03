@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation_bookMyShow-suite.xml" />
+	<munit:test name="PostMovieIdEticket-test-1" doc:id="cbe90ffa-1ee7-433b-a9e7-557540bf2244" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Insert" doc:id="bbd5e50e-a186-4760-a063-8241fc2fc7b4" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d64412d-f730-4a24-b78f-48a3906b67ab" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="c124a2e6-8f8d-41c8-9a53-eae295143387" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest1::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="7df28310-ef9e-4d37-85b8-70b013ed2755" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest1::spy_assert_attributes
+---
+spy_assert_attributes::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="6eeeed1e-4580-47c4-b1ce-df29442f8791" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest1::spy_assert_variables
+---
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="e082eb5a-2580-4f77-9925-1a6e6f2d1882" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest1::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="f756aef1-ff4e-4caa-899b-e1f47426e372" >
+				<munit:payload value="#[readUrl('classpath://PostMovieIdEtickettest1\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://PostMovieIdEtickettest1\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://PostMovieIdEtickettest1\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to PostMovieIdEticket" doc:id="be4fc5f6-1fa3-4a51-b1af-f99cbf049ed1" name="PostMovieIdEticket"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="97c11744-0db9-43f2-a056-b2463d4dd3fd" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Insert" doc:id="01365123-044f-4679-a03a-df538fed3cc7" processor="db:insert" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1d64412d-f730-4a24-b78f-48a3906b67ab" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="PostMovieIdEticket-test-2" doc:id="eee906c5-63c0-4b40-8912-c3c694145f3d" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="495f055d-1235-4d11-bef8-4c457154739e" >
+				<munit:payload value="#[readUrl('classpath://PostMovieIdEtickettest2\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://PostMovieIdEtickettest2\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://PostMovieIdEtickettest2\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to PostMovieIdEticket" doc:id="25704cbb-96ee-466c-a812-e84549c47a14" name="PostMovieIdEticket"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="20c7deb6-7a91-436a-82f7-9c1d8a5ca9b2" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest2::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Select" doc:id="8d2091de-2c7e-43b9-a080-537deb475d69" processor="db:select" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="57edffa1-bca1-4d66-8e3e-1890d485a02f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Update" doc:id="dc6c6de8-c887-4b8f-85eb-8cf03a6e3091" processor="db:update" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2bbb82dc-a491-4dfc-b370-7eeb03ac6d22" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="PostMovieIdEticket-test-3" doc:id="59b76638-5d8b-4652-9d4b-fd31f087cfcb" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Update" doc:id="1b4ce33c-f28b-425f-b293-5b59a0b0a049" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2bbb82dc-a491-4dfc-b370-7eeb03ac6d22" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="e26dbf67-b6ac-47b9-a101-ed275c4e1bcb" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest3::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="6b4a5a21-d6ff-4236-bf83-95256e8106de" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest3::spy_assert_attributes
+---
+spy_assert_attributes::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="0c690427-108e-4c40-99f5-376ed5710b9b" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest3::spy_assert_variables
+---
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="4926acb2-c643-4259-a8e8-f37e36627eb3" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest3::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="9be3e6ec-c489-4279-a1b7-1488248b05b3" >
+				<munit:payload value="#[readUrl('classpath://PostMovieIdEtickettest3\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://PostMovieIdEtickettest3\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://PostMovieIdEtickettest3\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to PostMovieIdEticket" doc:id="05d069f9-d6f1-4b41-9995-5732855b71a1" name="PostMovieIdEticket"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="7f6423d1-ae87-4d08-9a6f-3f9aa9fafc9c" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostMovieIdEtickettest3::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Update" doc:id="900e511c-2aa7-4797-a7e2-f81e142a1044" processor="db:update" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2bbb82dc-a491-4dfc-b370-7eeb03ac6d22" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="PostDiscount-test-1" doc:id="f2915dd3-de09-4877-a81e-fe88c62e014f" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Bulk insert" doc:id="1da3eee8-a2ee-4a44-954f-08b5526dbea8" processor="db:bulk-insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="887c43fe-e6ff-4ab6-bdd5-cee99be94a44" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="f63ce1ba-8189-4a03-a6a6-b515b8f16ffa" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="889321a4-3067-4736-ac61-f0bec360e58e" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::spy_assert_attributes
+---
+spy_assert_attributes::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="69a2758b-119f-491b-81a6-240bdc07fad7" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::spy_assert_variables
+---
+spy_assert_variables::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="874aeb31-4ecb-4b77-9d46-3d81c1c1e0a4" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:spy doc:name="Spy Select" doc:id="d64ce29a-8f07-4b42-9fb3-e309f9f69a9d" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="488434b2-3ed8-4ec9-bf10-ad683aea2b70" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="83865eb8-a2dd-41c3-bc4a-bf34697ea39d" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::spy_assert_payload2
+---
+spy_assert_payload2::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert variables" doc:id="25ecbf30-db8d-4ac6-b56c-87ced5c3c59b" message="The variables do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::spy_assert_variables1
+---
+spy_assert_variables1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="52806f23-aeb0-4e7f-95e7-f450107a79d6" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::spy_assert_payload3
+---
+spy_assert_payload3::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="91707357-c74a-4f44-be56-3de93d53f42d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://PostDiscounttest1\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://PostDiscounttest1\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://PostDiscounttest1\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to PostDiscount" doc:id="36f736f7-b7b4-4e1b-91a2-5bac5be7f7e8" name="PostDiscount"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="8b2dbef3-bb9c-41ed-be62-f8db784a6984" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import PostDiscounttest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Bulk insert" doc:id="3721d093-5fae-417d-bcc6-02a3080b05fe" processor="db:bulk-insert" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="887c43fe-e6ff-4ab6-bdd5-cee99be94a44" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Select" doc:id="b6c11c61-b7c6-4193-8df4-c7f13d54b716" processor="db:select" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="488434b2-3ed8-4ec9-bf10-ad683aea2b70" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GetMovies-test" doc:id="3725a003-2618-41de-94c7-c862ae80b521" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="43b1f04a-7085-46f1-b6d8-23099cb81adc" >
+				<munit:payload value="#[readUrl('classpath://GetMoviestest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://GetMoviestest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://GetMoviestest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to GetMovies" doc:id="7ea9b0f0-29c2-45dc-b132-1467f8ce10ad" name="GetMovies"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="f9806e27-34d7-4d93-9ac2-769bb8027d90" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import GetMoviestest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
