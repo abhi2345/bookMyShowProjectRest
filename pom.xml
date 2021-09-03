@@ -26,7 +26,12 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
 			
-			
+			</plugin>
+			<plugin>
+			<groupId>org.mule.tools.maven</groupId>
+			<artifactId>mule-maven-plugin</artifactId>
+			<version>${mule.maven.plugin.version}</version>
+			<extensions>true</extensions>
 			<configuration>
 				    <cloudHubDeployment>
 				      <uri>https://anypoint.mulesoft.com</uri>
@@ -43,13 +48,11 @@
 				        <key>value</key>
 				      </properties>
 				    </cloudHubDeployment>
-				</configuration>
+			</configuration>
+			
 			</plugin>
 			<plugin>
-				<groupId>org.mule.tools.maven</groupId>
-				<artifactId>mule-maven-plugin</artifactId>
-				<version>${mule.maven.plugin.version}</version>
-				<extensions>true</extensions>
+				
 				<configuration>
 					<sharedLibraries>
 						<sharedLibrary>
@@ -163,7 +166,7 @@
 			<url>https://repository.mulesoft.org/releases/</url>
 			<layout>default</layout>
 		</repository>
-	</repositories>
+   </repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
