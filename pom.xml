@@ -16,6 +16,7 @@
 		<app.runtime>4.3.0-20210719</app.runtime>
 		<mule.maven.plugin.version>3.5.2</mule.maven.plugin.version>
 		<munit.version>2.3.5</munit.version>
+		<mule.version>4.3.0</mule.version>
 	</properties>
 
 	<build>
@@ -24,6 +25,25 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
+			</plugin>
+			<plugin>
+			<configuration>
+				    <cloudHubDeployment>
+				      <uri>https://anypoint.mulesoft.com</uri>
+				      <muleVersion>${mule.version}</muleVersion>
+				      <username>${anypont.username}</username>
+				      <password>${anypoint.password}</password>
+				      <applicationName>${appname}</applicationName>
+				      <environment>${env}</environment>
+				      <region>${region}</region>
+				      <workers>${workers}</workers>
+				      <workerType>${workerType}</workerType>
+				      <objectStoreV2>true</objectStoreV2>
+				      <properties>
+				        <key>value</key>
+				      </properties>
+				    </cloudHubDeployment>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
@@ -44,6 +64,7 @@
 				<groupId>com.mulesoft.munit.tools</groupId>
 				<artifactId>munit-maven-plugin</artifactId>
 				<version>${munit.version}</version>
+		
 				<executions>
 					<execution>
 						<id>test</id>
@@ -54,6 +75,7 @@
 						</goals>
 					</execution>
 				</executions>
+				
 				<configuration>
 					<coverage>
 						<runCoverage>true</runCoverage>
@@ -62,6 +84,9 @@
 						</formats>
 					</coverage>
 				</configuration>
+				
+				
+				
 			</plugin>
 		</plugins>
 	</build>
