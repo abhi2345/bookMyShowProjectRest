@@ -32,30 +32,6 @@
 			<artifactId>mule-maven-plugin</artifactId>
 			<version>${mule.maven.plugin.version}</version>
 			<extensions>true</extensions>
-			<configuration>
-				    <cloudHubDeployment>
-				      <uri>https://anypoint.mulesoft.com</uri>
-				      <muleVersion>${mule.version}</muleVersion>
-				      <username>${anypont.username}</username>
-				      <password>${anypoint.password}</password>
-				      <applicationName>${appname}</applicationName>
-				      <environment>${env}</environment>
-				      <region>${region}</region>
-				      <workers>${workers}</workers>
-				      <workerType>${workerType}</workerType>
-				      <objectStoreV2>true</objectStoreV2>
-				      <properties>
-				        <key>value</key>
-				      </properties>
-				    </cloudHubDeployment>
-			</configuration>
-			</plugin>
-			
-			<plugin>
-			<groupId>org.mule.tools.maven</groupId>
-			<artifactId>mule-maven-plugin</artifactId>
-			<version>${mule.maven.plugin.version}</version>
-			<extensions>true</extensions>
 		    <configuration>
 					<sharedLibraries>
 						<sharedLibrary>
@@ -64,6 +40,23 @@
 						</sharedLibrary>
 					</sharedLibraries>
 					<classifier>mule-application</classifier>
+					  <configuration>
+					    <cloudHubDeployment>
+					      <uri>https://anypoint.mulesoft.com</uri>
+					      <muleVersion>${mule.version}</muleVersion>
+					      <username>${anypont.username}</username>
+					      <password>${anypoint.password}</password>
+					      <applicationName>${appname}</applicationName>
+					      <environment>${env}</environment>
+					      <region>${region}</region>
+					      <workers>${workers}</workers>
+					      <workerType>${workerType}</workerType>
+					      <objectStoreV2>true</objectStoreV2>
+					      <properties>
+					        <key>value</key>
+					      </properties>
+					    </cloudHubDeployment>
+			</configuration>
 			</configuration>
 			</plugin>
 			
